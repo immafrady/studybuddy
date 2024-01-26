@@ -5,10 +5,12 @@ package main
 
 import (
 	"github.com/immafrady/studybuddy/cmd"
-	"github.com/immafrady/studybuddy/data"
+	"github.com/immafrady/studybuddy/model"
 )
 
 func main() {
-	data.OpenDatabase()
+	user := model.User{Name: "immafrady"}
+	user.Create()
 	cmd.Execute()
+
 }
