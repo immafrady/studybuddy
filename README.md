@@ -6,6 +6,8 @@ reference:
 - [天聚数行](https://www.tianapi.com)
 - [爱点题库](https://www.51aidian.com/index/login/register)
 - [TenAPI](https://docs.tenapi.cn)
+- [马克思题库(github)](https://github.com/Ylarod/do_my_marx/tree/main)
+- [学习通题库爬虫(github)](https://github.com/notnotype/xxt)
 ## 路线
 
 -[ ] 用gorm操作sqlite数据库
