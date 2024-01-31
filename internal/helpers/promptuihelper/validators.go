@@ -1,4 +1,4 @@
-package promptuiutils
+package promptuihelper
 
 import "errors"
 
