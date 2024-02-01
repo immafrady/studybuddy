@@ -20,5 +20,5 @@ func SelectSingleClassify() model.Classify {
 		}
 	}
 
-	return promptuihelper.SingleChoiceSelect(options, "请选择题目类别")
+	return promptuihelper.SingleChoiceSelect(options, promptuihelper.SelectConfig{Label: "请选择题目类别"})
 }

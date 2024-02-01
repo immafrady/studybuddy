@@ -15,10 +15,10 @@ reference:
 
 ## 功能
 
--[ ] start 开始
--[ ] history 历史列表
+-[ ] start 开始，随便刷题
 -[ ] exam 考试模式
--[ ] casual 随便刷题
+-[ ] review 复习旧题 
+-[ ] history 历史列表
 
 ## 待迭代功能
 -[ ] 用户

@@ -11,5 +11,7 @@ func SelectQuestionType() []model.QuestionType {
 		{Label: "多选题", Value: model.QuestionMultiple},
 		{Label: "判断题", Value: model.QuestionJudge},
 	}
-	return promptuihelper.MultipleChoiceSelect(options, "请选择答题类型：")
+	return promptuihelper.MultipleChoiceSelect(options, promptuihelper.SelectConfig{
+		Label: "请选择答题类型",
+	})
 }

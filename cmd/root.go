@@ -4,6 +4,7 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"github.com/immafrady/studybuddy/internal/controller"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -17,7 +18,7 @@ var rootCmd = &cobra.Command{
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-
+		controller.Navigate()
 	},
 }
 

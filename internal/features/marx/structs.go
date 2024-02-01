@@ -40,6 +40,7 @@ func NewQuiz(question *model.Question) Quiz {
 }
 
 /* --- 基本类型 --- */
+
 type baseQ struct {
 	Question string
 	Answer   string
