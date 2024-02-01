@@ -13,10 +13,12 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "studybuddy",
 	Short: "你的学习伙伴",
-	Long:  `背背单词、做做算术题`,
+	Long:  `带你刷刷题`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	//Run: func(cmd *cobra.Command, args []string) {},
+	Run: func(cmd *cobra.Command, args []string) {
+
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
