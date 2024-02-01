@@ -2,36 +2,23 @@ package service
 
 import (
 	"github.com/immafrady/studybuddy/internal/database"
-	"github.com/immafrady/studybuddy/internal/helpers/errorhelper"
+	"github.com/immafrady/studybuddy/internal/helpers/promptuihelper"
 	"github.com/immafrady/studybuddy/internal/model"
-	"github.com/manifoldco/promptui"
 )
 
-// SelectClassifyId 选择类别
-func SelectClassifyId() uint {
+// SelectSingleClassify 单选类别
+func SelectSingleClassify() model.Classify {
 	db, _ := database.Get()
 	var classifies []model.Classify
 	db.Find(&classifies)
-	classifies = append(classifies, model.Classify{Name: "全部"})
+	var options = make([]promptuihelper.SingleOption[model.Classify], len(classifies))
 
-	prompt := promptui.Select{
-		Label: "请选择题目类别",
-		Items: classifies,
-		Templates: &promptui.SelectTemplates{
-			Label:    "{{ . }}：",
-			Active:   "● {{ .Name }}",
-			Inactive: "○ {{ .Name }}",
-			Selected: "已选择： {{ .Name }}",
-		},
-		Size: 5,
+	for i, c := range classifies {
+		options[i] = promptuihelper.SingleOption[model.Classify]{
+			Label: c.Name,
+			Value: c,
+		}
 	}
 
-	i, _, err := prompt.Run()
-	errorhelper.LogError(err)
-	if i < len(classifies) {
-		item := classifies[i]
-		return item.ID
-	} else {
-		return 0
-	}
+	return promptuihelper.SingleChoiceSelect(options, "请选择题目类别")
 }
