@@ -3,14 +3,10 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import (
-	"github.com/immafrady/studybuddy/cmd"
-	"github.com/immafrady/studybuddy/model"
-)
+import "github.com/immafrady/studybuddy/internal/startup"
 
 func main() {
-	user := model.User{Name: "immafrady"}
-	user.Create()
-	cmd.Execute()
+	startup.Bootstrap()
+	//cmd.Execute()
 
 }
