@@ -1,4 +1,4 @@
-package service
+package prompt
 
 import (
 	"github.com/immafrady/studybuddy/internal/database"

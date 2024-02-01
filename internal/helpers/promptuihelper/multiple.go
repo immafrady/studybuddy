@@ -16,7 +16,7 @@ func (m *MultipleOption[T]) onCheck() {
 }
 
 func MultipleChoiceSelect[T any](options []MultipleOption[T], config SelectConfig) (ret []T) {
-	options = append([]MultipleOption[T]{{Label: "Confirm"}}, options...)
+	options = append([]MultipleOption[T]{{Label: "提交"}}, options...)
 	l := len(options)
 	index := -1
 	for index != 0 {
