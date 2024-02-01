@@ -19,11 +19,20 @@ type Question struct {
 	Q          string       // 问题
 	A          string       // 答案
 	Detail     string       // 问题补充
-	Like       bool         // 是否标记（todo 不知道bool类型支不支持）
+	Like       bool         // 是否标记
 	Count      uint         // 做的次数
+	WrongCount uint         // 错的次数
+	WrongRate  uint         `gorm:"-"`           // 计算一下失败率
 	Type       QuestionType `gorm:"column:type"` // 问题类型
 }
 
-func (q Question) TableName() string {
+func (q *Question) AfterFind(db *gorm.DB) error {
+	if q.Count != 0 {
+		q.WrongRate = uint(float64(q.WrongCount) / float64(q.Count) * 100)
+	}
+	return nil
+}
+
+func (q *Question) TableName() string {
 	return "quiz_question"
 }
