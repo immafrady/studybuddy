@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/immafrady/studybuddy/internal/features"
+	"github.com/immafrady/studybuddy/internal/helpers/colorhelper"
 	"github.com/immafrady/studybuddy/internal/helpers/promptuihelper"
 	"github.com/immafrady/studybuddy/internal/model"
 	"github.com/immafrady/studybuddy/internal/service/quiz"
+	"strings"
 )
 
 type AnswerSheet struct {
@@ -46,7 +48,7 @@ func (a *AnswerSheet) TakeExam() bool {
 
 func (a *AnswerSheet) GetLabel() string {
 	// (1/10:单选题) 我是问题我是问题
-	return fmt.Sprintf("(%v/%v:%v) %v ", a.index, a.total, model.QuestionTypeLabelMap[a.Type], a.Q)
+	return fmt.Sprintf("(%v/%v:%v) %v ", a.index+1, a.total, model.QuestionTypeLabelMap[a.Type], a.Q)
 }
 
 func (a *AnswerSheet) GetAnswer() string {
@@ -55,20 +57,36 @@ func (a *AnswerSheet) GetAnswer() string {
 
 func (a *AnswerSheet) DisplayResult(options []promptuihelper.Option[string], ans string, correct bool) {
 	fmt.Println("\n-------------")
-	fmt.Println(a.GetLabel())
-	for _, v := range options {
-		fmt.Println(v.Label)
-	}
+	var marker *color.Color
 	if correct {
-		color.Set(color.FgGreen)
-		fmt.Println("回答正确：", ans)
-		color.Unset()
+		marker = color.New(color.FgGreen)
+		colorhelper.RightColor.Print("✓ ")
 	} else {
-		fmt.Print("回答错误：")
-		color.Set(color.FgRed)
-		fmt.Print(ans, "\n")
-		color.Unset()
-		fmt.Printf("正确答案：%v\n", a.A)
+		marker = color.New(color.BgRed)
+		colorhelper.WrongColor.Print("✗ ")
+	}
+	fmt.Print(a.GetLabel(), "\n")
+	for _, v := range options {
+		display := " " + v.Label
+		selected := strings.Contains(ans, v.Value)
+		if selected {
+			display = "●" + display
+		} else {
+			display = " " + display
+		}
+		if correct {
+			if selected {
+				marker.Println(display)
+			} else {
+				fmt.Println(display)
+			}
+		} else {
+			if strings.Contains(a.A, v.Value) {
+				marker.Println(display)
+			} else {
+				fmt.Println(display)
+			}
+		}
 	}
 	fmt.Println("-------------")
 
