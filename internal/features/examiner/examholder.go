@@ -47,4 +47,9 @@ func (h Holder) Start() {
 		correct := taker.TakeExam()
 		quiz.AddAnswerRecord(h.Record, q.ID, correct)
 	}
+	fmt.Println("答题结束！")
+	wc := len(h.WrongQuestionIds)
+	tc := len(h.QuestionIds)
+	sc := tc - wc
+	fmt.Printf("正确: %v; 错误: %v; 得分：%v", sc, wc, int(float64(sc)/float64(tc)*100))
 }
