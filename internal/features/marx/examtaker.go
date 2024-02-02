@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/immafrady/studybuddy/internal/features"
 	"github.com/immafrady/studybuddy/internal/model"
+	"github.com/immafrady/studybuddy/internal/service/quiz"
 )
 
 type AnswerSheet struct {
@@ -38,7 +39,7 @@ func (a *AnswerSheet) TakeExam() bool {
 
 	options := a.pipeline.ParseOption(a.Detail)
 	correct := a.pipeline.DoTask(options, a)
-
+	quiz.MarkQuestionDone(a.Question, correct)
 	if correct {
 		fmt.Println(label, "对了！")
 	} else {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/immafrady/studybuddy/internal/database"
 	"github.com/immafrady/studybuddy/internal/model"
+	"github.com/immafrady/studybuddy/internal/service/quiz"
 	"gorm.io/gorm"
 )
 
@@ -43,6 +44,7 @@ func (h Holder) Start() {
 	l := len(h.Classify.Questions)
 	for i, q := range h.Classify.Questions {
 		taker := h.getExamTaker(&q, i, l)
-		taker.TakeExam()
+		correct := taker.TakeExam()
+		quiz.AddAnswerRecord(h.Record, q.ID, correct)
 	}
 }
