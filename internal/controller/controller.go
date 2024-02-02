@@ -8,8 +8,8 @@ type entryItem struct {
 	Callback func()
 }
 
-func (e entryItem) toSingleOption() promptuihelper.SingleOption[entryItem] {
-	return promptuihelper.SingleOption[entryItem]{
+func (e entryItem) toSingleOption() promptuihelper.Option[entryItem] {
+	return promptuihelper.Option[entryItem]{
 		Label:  e.Label,
 		Value:  e,
 		Detail: e.Detail,
@@ -23,7 +23,7 @@ func Navigate() {
 		reviewEntry,
 		historyEntry,
 	}
-	var options = make([]promptuihelper.SingleOption[entryItem], len(entries))
+	var options = make([]promptuihelper.Option[entryItem], len(entries))
 	for i, entry := range entries {
 		options[i] = entry.toSingleOption()
 	}

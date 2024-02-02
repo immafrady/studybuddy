@@ -5,13 +5,7 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-type SingleOption[T any] struct {
-	Label  string
-	Value  T
-	Detail string
-}
-
-func SingleChoiceSelect[T any](options []SingleOption[T], config SelectConfig) (ret T) {
+func SingleChoiceSelect[T any](options []Option[T], config SelectConfig) (ret T) {
 	prompt := promptui.Select{
 		Label: config.Label,
 		Items: options,

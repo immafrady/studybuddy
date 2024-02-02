@@ -4,19 +4,8 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-type MultipleOption[T any] struct {
-	Label   string
-	Value   T
-	Detail  string
-	Checked bool
-}
-
-func (m *MultipleOption[T]) onCheck() {
-	m.Checked = !m.Checked
-}
-
-func MultipleChoiceSelect[T any](options []MultipleOption[T], config SelectConfig) (ret []T) {
-	options = append([]MultipleOption[T]{{Label: "提交"}}, options...)
+func MultipleChoiceSelect[T any](options []Option[T], config SelectConfig) (ret []T) {
+	options = append([]Option[T]{{Label: "提交"}}, options...)
 	l := len(options)
 	index := -1
 	for index != 0 {

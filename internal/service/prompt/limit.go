@@ -3,7 +3,7 @@ package prompt
 import "github.com/immafrady/studybuddy/internal/helpers/promptuihelper"
 
 func SelectLimit() int {
-	options := []promptuihelper.SingleOption[int]{
+	options := []promptuihelper.Option[int]{
 		{Label: "10  (随便玩玩)", Value: 10},
 		{Label: "25  (上点强度)", Value: 25},
 		{Label: "50  (我认真了)", Value: 50},
