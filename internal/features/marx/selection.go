@@ -17,10 +17,10 @@ type selection struct {
 // toOptions 转换为下拉选项
 func (s selection) toOptions() []promptuihelper.Option[string] {
 	return []promptuihelper.Option[string]{
-		{Label: s.A, Value: "A"},
-		{Label: s.B, Value: "B"},
-		{Label: s.C, Value: "C"},
-		{Label: s.D, Value: "D"},
+		{Label: "A." + s.A, Value: "A"},
+		{Label: "B." + s.B, Value: "B"},
+		{Label: "C." + s.C, Value: "C"},
+		{Label: "D." + s.D, Value: "D"},
 	}
 }
 
