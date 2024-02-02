@@ -16,7 +16,7 @@ func (m multiplePipeline) ParseOption(str string) []promptuihelper.Option[string
 }
 
 func (m multiplePipeline) DoTask(options []promptuihelper.Option[string], et features.ExamTaker) (string, bool) {
-	ans := promptuihelper.MultipleChoiceSelect(options, promptuihelper.SelectConfig{Label: et.FormatLabel()})
+	ans := promptuihelper.MultipleChoiceSelect(options, promptuihelper.SelectConfig{Label: et.GetLabel()})
 	ansStr := strings.Join(ans, "")
 	return ansStr, ansStr == et.GetAnswer()
 }
