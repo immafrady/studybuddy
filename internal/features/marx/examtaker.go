@@ -38,12 +38,12 @@ func (a *AnswerSheet) TakeExam() bool {
 	label := a.FormatLabel()
 
 	options := a.pipeline.ParseOption(a.Detail)
-	correct := a.pipeline.DoTask(options, a)
+	ans, correct := a.pipeline.DoTask(options, a)
 	quiz.MarkQuestionDone(a.Question, correct)
 	if correct {
-		fmt.Println(label, "对了！")
+		fmt.Println(label, "对了！", ans)
 	} else {
-		fmt.Println(label, "错了！")
+		fmt.Println(label, "错了！", ans)
 	}
 	return correct
 }

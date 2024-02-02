@@ -14,7 +14,7 @@ func (s singlePipeline) ParseOption(str string) []promptuihelper.Option[string] 
 	return selection.toOptions()
 }
 
-func (s singlePipeline) DoTask(options []promptuihelper.Option[string], et features.ExamTaker) bool {
+func (s singlePipeline) DoTask(options []promptuihelper.Option[string], et features.ExamTaker) (string, bool) {
 	ans := promptuihelper.SingleChoiceSelect(options, promptuihelper.SelectConfig{Label: et.FormatLabel()})
-	return ans == et.GetAnswer()
+	return ans, ans == et.GetAnswer()
 }

@@ -11,6 +11,6 @@ type ExamTaker interface {
 }
 
 type Pipeline[T any] interface {
-	ParseOption(str string) []promptuihelper.Option[T] // 解析问题
-	DoTask([]promptuihelper.Option[T], ExamTaker) bool // 做题+判断                                       // 执行任务
+	ParseOption(str string) []promptuihelper.Option[T]                       // 解析问题
+	DoTask([]promptuihelper.Option[T], ExamTaker) (ans string, correct bool) // 做题+判断
 }
