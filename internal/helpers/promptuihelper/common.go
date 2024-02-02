@@ -19,4 +19,5 @@ type SelectConfig struct {
 	Details       string
 	Like          bool   // 标记为喜欢
 	OnLikeClicked func() // 标记为喜欢的方法 todo
+	ConfirmText   string // 确认按钮的文字
 }

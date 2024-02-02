@@ -5,13 +5,14 @@ import (
 	"github.com/immafrady/studybuddy/internal/model"
 )
 
-func SelectQuestionType() []model.QuestionType {
+func SelectQuestionType(confirmText string) []model.QuestionType {
 	options := []promptuihelper.Option[model.QuestionType]{
 		{Label: "单选题", Value: model.QuestionSingle, Checked: true},
 		{Label: "多选题", Value: model.QuestionMultiple, Checked: true},
 		{Label: "判断题", Value: model.QuestionJudge, Checked: true},
 	}
 	return promptuihelper.MultipleChoiceSelect(options, promptuihelper.SelectConfig{
-		Label: "请选择答题类型",
+		Label:       "请选择答题类型",
+		ConfirmText: confirmText,
 	})
 }

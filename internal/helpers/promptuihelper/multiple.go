@@ -5,7 +5,13 @@ import (
 )
 
 func MultipleChoiceSelect[T any](options []Option[T], config SelectConfig) (ret []T) {
-	options = append([]Option[T]{{Label: "提交"}}, options...)
+	var confirmText string
+	if config.ConfirmText == "" {
+		confirmText = "提交"
+	} else {
+		confirmText = config.ConfirmText
+	}
+	options = append([]Option[T]{{Label: confirmText}}, options...)
 	l := len(options)
 	index := -1
 	for index != 0 {

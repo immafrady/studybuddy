@@ -14,8 +14,7 @@ var startEntry = entryItem{
 	Callback: func() {
 		classify := prompt.SelectSingleClassify()
 		fmt.Printf("您选择的类目是：%v\n", classify.Name)
-		types := prompt.SelectQuestionType()
-		fmt.Println(types)
+		types := prompt.SelectQuestionType("下一步")
 		limit := prompt.SelectLimit()
 		quiz.FetchQuestionList(&classify, func(db *gorm.DB) *gorm.DB {
 			return db.Where("type IN (?)", types).Limit(limit)
