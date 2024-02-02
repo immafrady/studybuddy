@@ -12,6 +12,12 @@ const (
 	QuestionJudge    QuestionType = "Judge"  // 判断
 )
 
+var QuestionTypeLabelMap = map[QuestionType]string{
+	QuestionMultiple: "多选题",
+	QuestionSingle:   "单选题",
+	QuestionJudge:    "判断题",
+}
+
 // Question 问题
 type Question struct {
 	gorm.Model
