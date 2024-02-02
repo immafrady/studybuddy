@@ -15,7 +15,7 @@ func SelectSingleClassify() model.Classify {
 
 	for i, c := range classifies {
 		options[i] = promptuihelper.SingleOption[model.Classify]{
-			Label: c.Name,
+			Label: string(c.Name),
 			Value: c,
 		}
 	}

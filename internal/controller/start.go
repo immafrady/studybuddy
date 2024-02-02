@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/immafrady/studybuddy/internal/service/prompt"
+	"github.com/immafrady/studybuddy/internal/service/quiz"
+	"gorm.io/gorm"
 )
 
 var startEntry = entryItem{
@@ -13,5 +16,11 @@ var startEntry = entryItem{
 		fmt.Printf("您选择的类目是：%v\n", classify.Name)
 		types := prompt.SelectQuestionType()
 		fmt.Println(types)
+		limit := prompt.SelectLimit()
+		quiz.FetchQuestionList(&classify, func(db *gorm.DB) *gorm.DB {
+			return db.Where("type IN (?)", types).Limit(limit)
+		})
+		j, _ := json.Marshal(classify)
+		fmt.Println(string(j))
 	},
 }

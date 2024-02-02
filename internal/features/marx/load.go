@@ -12,7 +12,7 @@ import (
 // LoadData 加载题目
 func LoadData() {
 	db, _ := database.Get()
-	classify := model.Classify{Name: "马克思主义基本原理"}
+	classify := model.Classify{Name: model.ClassMarx}
 	// 如果找到一条，说明有初始化了
 	if db.Limit(1).Find(&classify).RowsAffected != 1 {
 		// 添加分类
