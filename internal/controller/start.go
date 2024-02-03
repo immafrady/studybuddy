@@ -17,7 +17,7 @@ var startEntry = entryItem{
 		types := prompt.SelectQuestionType("下一步")
 		limit := prompt.SelectLimit()
 		quiz.FetchQuestionList(&classify, func(db *gorm.DB) *gorm.DB {
-			return db.Where("type IN (?)", types).Limit(limit)
+			return db.Where("type IN (?)", types).Order("count").Limit(limit)
 		})
 		exam := examiner.NewExamHolder(&classify, types, limit)
 		exam.Start()

@@ -28,7 +28,7 @@ type Question struct {
 	Like       bool         // 是否标记
 	Count      uint         // 做的次数
 	WrongCount uint         // 错的次数
-	WrongRate  uint         `gorm:"-"`           // 计算一下失败率
+	WrongRate  uint         `gorm:"-"`           // 计算一下失败率 todo 好像可以删
 	Type       QuestionType `gorm:"column:type"` // 问题类型
 }
 
