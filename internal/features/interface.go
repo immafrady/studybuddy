@@ -5,10 +5,10 @@ import (
 )
 
 type ExamTaker interface {
-	TakeExam() bool                                                                  // 理解,回答
-	GetLabel() string                                                                // 生成标签
-	GetAnswer() string                                                               // 获取答案
-	DisplayResult(options []promptuihelper.Option[string], ans string, correct bool) // 展示结果
+	TakeExam() (correct bool) // 理解,回答
+	GetLabel() string         // 生成标签
+	GetAnswer() string        // 获取答案
+	DisplayResult()           // 展示结果
 }
 
 type Pipeline[T any] interface {

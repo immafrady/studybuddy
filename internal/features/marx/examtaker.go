@@ -14,7 +14,9 @@ import (
 type AnswerSheet struct {
 	features.ExamTaker // 指定继承了这个
 	*model.Question
-	Correct  bool
+	correct  bool                            // 是否正确
+	ans      string                          // 用户自己写的答案
+	options  []promptuihelper.Option[string] // 下拉选项
 	index    int
 	total    int
 	pipeline features.Pipeline[string]
@@ -39,11 +41,12 @@ func NewExamTaker(question *model.Question, curr int, total int) features.ExamTa
 }
 
 func (a *AnswerSheet) TakeExam() bool {
-	options := a.pipeline.ParseOption(a.Detail)
-	ans, correct := a.pipeline.DoTask(options, a)
-	quiz.MarkQuestionDone(a.Question, correct)
-	a.DisplayResult(options, ans, correct)
-	return correct
+	a.options = a.pipeline.ParseOption(a.Detail)
+	a.ans, a.correct = a.pipeline.DoTask(a.options, a)
+
+	quiz.MarkQuestionDone(a.Question, a.correct)
+	a.DisplayResult()
+	return a.correct
 }
 
 func (a *AnswerSheet) GetLabel() string {
@@ -55,10 +58,10 @@ func (a *AnswerSheet) GetAnswer() string {
 	return a.A
 }
 
-func (a *AnswerSheet) DisplayResult(options []promptuihelper.Option[string], ans string, correct bool) {
+func (a *AnswerSheet) DisplayResult() {
 	fmt.Println("\n-------------")
 	var marker *color.Color
-	if correct {
+	if a.correct {
 		marker = color.New(color.FgGreen)
 		colorhelper.RightColor.Print("✓ ")
 	} else {
@@ -66,15 +69,15 @@ func (a *AnswerSheet) DisplayResult(options []promptuihelper.Option[string], ans
 		colorhelper.WrongColor.Print("✗ ")
 	}
 	fmt.Print(a.GetLabel(), "\n")
-	for _, v := range options {
+	for _, v := range a.options {
 		display := " " + v.Label
-		selected := strings.Contains(ans, v.Value)
+		selected := strings.Contains(a.ans, v.Value)
 		if selected {
 			display = "●" + display
 		} else {
 			display = " " + display
 		}
-		if correct {
+		if a.correct {
 			if selected {
 				marker.Println(display)
 			} else {
