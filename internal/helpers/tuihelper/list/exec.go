@@ -1,30 +1,45 @@
 package list
 
-import "github.com/charmbracelet/bubbles/list"
+import (
+	"github.com/charmbracelet/bubbles/help"
+	"github.com/charmbracelet/bubbles/list"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/immafrady/studybuddy/internal/helpers/errorhelper"
+)
 
 type Config struct {
-	Options []list.Item
-	Title   string
-	Liked   bool
+	Options  []Option
+	Title    string
+	Liked    bool
+	LikeFn   func()
+	Multiple bool
 }
 
-func Run(config Config) {
-	for _, o := range config.Options {
-		if _, ok := o.(Option); ok {
-
-		}
+func Run(config Config) Model {
+	var items = make([]list.Item, len(config.Options))
+	for i, o := range config.Options {
+		items[i] = o
 	}
-	m := Model{list: list.New(config.Options, list.NewDefaultDelegate(), 0, 0)}
-	m.list.Title = config.Title
 
-	// todo 待删除
-	list.New([]list.Item{
-		Option{
-			Item:    nil,
-			Label:   "",
-			Value:   "",
-			Desc:    "",
-			Checked: false,
+	m := Model{
+		list: list.New(items, NewOptionDelegate(config.Options), 0, 0),
+		help: help.New(),
+		keyMap: keyMap{
+			showLike: config.LikeFn != nil,
+			multiple: config.Multiple,
 		},
-	}, list.NewDefaultDelegate(), 0, 0)
+		options:    config.Options,
+		isMultiple: config.Multiple,
+	}
+	m.list.Title = config.Title
+	m.list.Styles.Title = lipgloss.NewStyle()
+	//m.list.SetShowStatusBar(false)
+	m.list.SetShowHelp(false)
+	model, err := tea.NewProgram(m, tea.WithAltScreen()).Run()
+	if err != nil {
+		errorhelper.LogError(err)
+	}
+	m, _ = model.(Model)
+	return m
 }

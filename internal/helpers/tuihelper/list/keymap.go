@@ -5,19 +5,19 @@ import "github.com/charmbracelet/bubbles/key"
 var (
 	keyUp = key.NewBinding(
 		key.WithKeys("up"),
-		key.WithHelp("↑/k", "向右"),
+		key.WithHelp("↑", "向右"),
 	)
 	keyDown = key.NewBinding(
 		key.WithKeys("down"),
-		key.WithHelp("↓/j", "向下"),
+		key.WithHelp("↓", "向下"),
 	)
 	keyLeft = key.NewBinding(
 		key.WithKeys("left"),
-		key.WithHelp("←/h", "左移"),
+		key.WithHelp("←", "左移"),
 	)
 	keyRight = key.NewBinding(
 		key.WithKeys("right"),
-		key.WithHelp("→/l", "右移"),
+		key.WithHelp("→", "右移"),
 	)
 	keyQuit = key.NewBinding(
 		key.WithKeys("q", "ctrl+c"),
@@ -25,7 +25,7 @@ var (
 	)
 	keyHelp = key.NewBinding(
 		key.WithKeys("?"),
-		key.WithHelp("?", "toggle help"),
+		key.WithHelp("?", "展示帮助信息"),
 	)
 	keyLike = key.NewBinding(
 		key.WithKeys("l"),
@@ -33,11 +33,11 @@ var (
 	)
 	keyEnter = key.NewBinding(
 		key.WithKeys("enter"),
-		key.WithHelp("回车", "确认选择"),
+		key.WithHelp("回车(enter)", "确认选择"),
 	)
 	keySpace = key.NewBinding(
 		key.WithKeys(" "),
-		key.WithHelp("空格", "选择"),
+		key.WithHelp("空格(space)", "选择"),
 	)
 )
 
