@@ -10,10 +10,11 @@ import (
 type Model struct {
 	list       list.Model
 	help       help.Model
-	Options    Options
+	options    []Option
+	keyMap     keyMap
 	isMultiple bool
 	liked      bool
-	likeFn     func()
+	likeFn     func(liked bool)
 }
 
 func (m Model) Init() tea.Cmd {
@@ -24,10 +25,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
+		case key.Matches(msg, keyUp):
+			m.list.CursorUp()
+		case key.Matches(msg, keyDown):
+			m.list.CursorDown()
+		case key.Matches(msg, keyLeft):
+			m.list.PrevPage()
+		case key.Matches(msg, keyRight):
+			m.list.NextPage()
 		case key.Matches(msg, keyLike):
 			if m.likeFn != nil {
 				m.liked = !m.liked
-				m.likeFn()
+				m.likeFn(m.liked)
 			}
 		case key.Matches(msg, keyEnter):
 			if m.isMultiple { //
@@ -45,16 +54,30 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, keyHelp):
 			m.help.ShowAll = !m.help.ShowAll
 		}
+	case tea.WindowSizeMsg:
+		h, v := docStyle.GetFrameSize()
+		m.list.SetHeight(msg.Height - h)
+		m.list.SetWidth(msg.Width - v)
 	}
 	return m, nil
 }
 
 func (m Model) View() string {
-	//TODO implement me
-	panic("implement me")
+	helpView := m.help.View(m.keyMap)
+	return docStyle.Render(m.list.View(), helpView)
 }
 
 func (m Model) toggleCheck() {
-	idx := m.list.Index()
-	m.Options[idx].ToggleCheck()
+	index := m.list.Index()
+	m.options[index].ToggleCheck()
+}
+
+func (m Model) GetSelectedOptions() []Option {
+	var newOs []Option
+	for _, o := range m.options {
+		if o.Checked {
+			newOs = append(newOs, o)
+		}
+	}
+	return newOs
 }
