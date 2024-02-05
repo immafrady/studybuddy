@@ -15,8 +15,8 @@ type QuizSelectionRunArgs struct {
 }
 
 // QuizSelectionRun 下拉选项的抽象页面；可以控制showResult
-func QuizSelectionRun(args QuizSelectionRunArgs) {
-	selection.Run(selection.Config{
+func QuizSelectionRun(args QuizSelectionRunArgs) selection.Model {
+	return selection.Run(selection.Config{
 		Options:  args.OptionParser(args.Question),
 		Title:    args.Title,
 		Multiple: args.Multiple,

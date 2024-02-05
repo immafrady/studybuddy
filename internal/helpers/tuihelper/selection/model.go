@@ -78,6 +78,7 @@ func (m Model) View() string {
 	}))
 }
 
+// GetSelectedValues 获取选择的值
 func (m Model) GetSelectedValues() []interface{} {
 	var values []interface{}
 	for _, o := range m.options {
@@ -86,6 +87,16 @@ func (m Model) GetSelectedValues() []interface{} {
 		}
 	}
 	return values
+}
+
+// AllSelectMatched 所有勾选都匹配上答案？
+func (m Model) AllSelectMatched() bool {
+	for _, o := range m.options {
+		if o.IsChecked != o.IsCorrect {
+			return false
+		}
+	}
+	return true
 }
 
 func (m Model) toggleCheck() {
