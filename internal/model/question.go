@@ -28,15 +28,8 @@ type Question struct {
 	Like       bool         // 是否标记
 	Count      uint         // 做的次数
 	WrongCount uint         // 错的次数
-	WrongRate  uint         `gorm:"-"`           // 计算一下失败率 todo 好像可以删
-	Type       QuestionType `gorm:"column:type"` // 问题类型
-}
-
-func (q *Question) AfterFind(db *gorm.DB) error {
-	if q.Count != 0 {
-		q.WrongRate = uint(float64(q.WrongCount) / float64(q.Count) * 100)
-	}
-	return nil
+	Type       QuestionType // 问题类型
+	UserAnswer string       `gorm:"-"` // 用户的回答，仅作记录用
 }
 
 func (q *Question) TableName() string {

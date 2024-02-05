@@ -25,8 +25,9 @@ func MarkQuestionDone(question *model.Question, correct bool) {
 }
 
 // ToggleQuestionLike 标记/取消标记题目喜欢
-func ToggleQuestionLike(question *model.Question) {
+func ToggleQuestionLike(question *model.Question) bool {
 	db, _ := database.Get()
 	question.Like = !question.Like
 	db.Save(question)
+	return question.Like
 }
