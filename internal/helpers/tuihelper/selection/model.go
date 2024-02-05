@@ -16,6 +16,7 @@ type Model struct {
 	options  []*Option
 	liked    bool
 	likeFn   func(bool)
+	showLike bool
 	multiple bool
 	title    string
 }
@@ -73,7 +74,10 @@ func (m Model) View() string {
 	} else {
 		str = m.selectView()
 	}
-	return docStyle.Render(str + "\n\n" + m.help.View(keyMap{}))
+	return docStyle.Render(str + "\n\n" + m.help.View(keyMap{
+		showLike: m.showLike,
+		multiple: m.multiple,
+	}))
 }
 
 func (m Model) GetSelectedValues() []interface{} {

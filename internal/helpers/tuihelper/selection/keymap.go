@@ -25,11 +25,11 @@ var (
 	)
 	keyEnter = key.NewBinding(
 		key.WithKeys("enter"),
-		key.WithHelp("回车(enter)", "确认选择"),
+		key.WithHelp("回车(enter)", "提交"),
 	)
 	keySpace = key.NewBinding(
 		key.WithKeys(" "),
-		key.WithHelp("空格(space)", "选择"),
+		key.WithHelp("空格(space)", "选择当前项"),
 	)
 )
 
