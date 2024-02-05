@@ -9,11 +9,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func Start() {
+func start() {
 	classify := screens.ClassifyRun()
 	fmt.Printf("您选择的类目是：%v\n", classify.Name)
 	types := prompt.SelectQuestionType("下一步")
-	limit := prompt.SelectLimit()
+	limit := screens.LimitScreen()
 	quiz.FetchQuestionList(&classify, func(db *gorm.DB) *gorm.DB {
 		return db.Where("type IN (?)", types).Order("count").Limit(limit)
 	})
