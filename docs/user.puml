@@ -1,0 +1,10 @@
+@startuml
+'https://plantuml.com/zh/activity-diagram-beta
+
+start
+if (首次执行?) then (yes)
+    :"首次打开生成用户信息";
+    :输入用户名;
+else (no)
+    :读取用户信息;
+@enduml
