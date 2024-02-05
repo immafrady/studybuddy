@@ -1,4 +1,4 @@
-package classifyscreen
+package screens
 
 import (
 	"github.com/immafrady/studybuddy/internal/database"
@@ -6,7 +6,7 @@ import (
 	"github.com/immafrady/studybuddy/internal/model"
 )
 
-func Run() (classify model.Classify) {
+func ClassifyRun() (classify model.Classify) {
 	db, _ := database.Get()
 	var classifies []model.Classify
 	db.Find(&classifies)

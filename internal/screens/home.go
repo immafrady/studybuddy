@@ -1,4 +1,4 @@
-package homescreen
+package screens
 
 import (
 	"github.com/immafrady/studybuddy/internal/dispatcher"
@@ -9,7 +9,7 @@ type wrapper struct {
 	cb func()
 }
 
-func Run() {
+func HomeRun() {
 
 	m := selection.Run(selection.Config{
 		Options: []*selection.Option{
