@@ -13,11 +13,11 @@ type Model struct {
 	help       help.Model
 	itemStyles DefaultItemStyles
 	*handler
-	options  []*Option
-	liked    bool
-	likeFn   func(bool)
-	multiple bool
-	title    string
+	options      []*Option
+	liked        bool
+	toggleLikeFn func() bool
+	multiple     bool
+	title        string
 }
 
 func (m Model) Init() tea.Cmd {
@@ -33,9 +33,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, keyDown):
 			m.handler.MoveDown()
 		case key.Matches(msg, keyLike):
-			if m.likeFn != nil {
-				m.liked = !m.liked
-				m.likeFn(m.liked)
+			if m.toggleLikeFn != nil {
+				m.liked = m.toggleLikeFn()
 			}
 		case key.Matches(msg, keyEnter):
 			if m.multiple { //
@@ -74,7 +73,7 @@ func (m Model) View() string {
 		str = m.selectView()
 	}
 	return docStyle.Render(str + "\n\n" + m.help.View(keyMap{
-		showLike: m.likeFn != nil,
+		showLike: m.toggleLikeFn != nil,
 		multiple: m.multiple,
 	}))
 }
