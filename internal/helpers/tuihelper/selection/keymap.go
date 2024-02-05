@@ -40,8 +40,9 @@ type keyMap struct {
 
 func (k keyMap) getCustomKeys() []key.Binding {
 	var list []key.Binding
+	list = append(list, keyEnter)
 	if k.multiple {
-		list = append(list, keySpace, keyEnter)
+		list = append(list, keySpace)
 	}
 	if k.showLike {
 		list = append(list, keyLike)
