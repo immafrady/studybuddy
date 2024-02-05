@@ -3,14 +3,14 @@ package dispatcher
 import (
 	"fmt"
 	"github.com/immafrady/studybuddy/internal/features/examiner"
-	"github.com/immafrady/studybuddy/internal/screens/classify"
+	"github.com/immafrady/studybuddy/internal/screens"
 	"github.com/immafrady/studybuddy/internal/service/prompt"
 	"github.com/immafrady/studybuddy/internal/service/quiz"
 	"gorm.io/gorm"
 )
 
 func Start() {
-	classify := classifyscreen.Run()
+	classify := screens.ClassifyRun()
 	fmt.Printf("您选择的类目是：%v\n", classify.Name)
 	types := prompt.SelectQuestionType("下一步")
 	limit := prompt.SelectLimit()
