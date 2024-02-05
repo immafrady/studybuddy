@@ -76,7 +76,7 @@ func (m Model) View() string {
 	return docStyle.Render(str + "\n\n" + m.help.View(keyMap{}))
 }
 
-func (m Model) GetSelectedValue() []interface{} {
+func (m Model) GetSelectedValues() []interface{} {
 	var values []interface{}
 	for _, o := range m.options {
 		if o.IsChecked {
