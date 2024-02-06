@@ -131,7 +131,7 @@ func (m Model) selectView() string {
 	str := m.formattedTitle()
 
 	for i, o := range m.options {
-		str += o.display(i == m.idx, m.showDesc(), m.itemStyles) + "\n"
+		str += o.display(m.multiple, i == m.idx, m.showDesc(), m.itemStyles) + "\n"
 	}
 	return str
 }
@@ -140,7 +140,7 @@ func (m Model) resultView() string {
 	str := m.formattedTitle()
 
 	for _, o := range m.options {
-		str += o.displayResult(m.showDesc(), m.itemStyles, m.AllSelectMatched()) + "\n"
+		str += o.displayResult(m.multiple, m.showDesc(), m.itemStyles, m.AllSelectMatched()) + "\n"
 	}
 	return str
 }
