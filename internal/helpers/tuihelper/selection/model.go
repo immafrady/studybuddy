@@ -37,17 +37,22 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.liked = m.toggleLikeFn()
 			}
 		case key.Matches(msg, keyEnter):
-			if m.multiple { //
-				// 多选下仅提交
+			if m.onResultView { // 在结果页就直接离开
 				return m, tea.Quit
 			} else {
-				// 单选下是选中并提交
-				m.toggleCheck()
-				return m, tea.Quit
+				if !m.multiple {
+					// 单选场景下，选中值
+					m.toggleCheck()
+				}
+				if m.showResult { // 如果要展示结果，就跳去结果页
+					m.handler.onResultView = true
+				} else { // 不需要展示结果就直接
+					return m, tea.Quit
+				}
 			}
 		case key.Matches(msg, keySpace):
-			if m.multiple {
-				// 多选下是选中
+			if !m.onResultView && m.multiple {
+				// 非结果页，多选下是选中
 				m.toggleCheck()
 			}
 		case key.Matches(msg, keyHelp):
@@ -72,10 +77,18 @@ func (m Model) View() string {
 	} else {
 		str = m.selectView()
 	}
-	return docStyle.Render(str + "\n\n" + m.help.View(keyMap{
-		showLike: m.toggleLikeFn != nil,
-		multiple: m.multiple,
-	}))
+	var km help.KeyMap
+	if m.onResultView {
+		km = keyMapResultView{
+			showLike: m.toggleLikeFn != nil,
+		}
+	} else {
+		km = keyMap{
+			showLike: m.toggleLikeFn != nil,
+		}
+	}
+
+	return docStyle.Render(str + "\n\n" + m.help.View(km))
 }
 
 // GetSelectedValues 获取选择的值

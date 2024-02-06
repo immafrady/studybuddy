@@ -10,8 +10,8 @@ type Config struct {
 	Options      []*Option   // 下拉选项
 	Title        string      // 标题
 	Multiple     bool        // 是否为多选
-	Liked        bool        // 是否为喜欢
-	ToggleLikeFn func() bool // 标记喜欢的方法
+	Liked        bool        // 是否为收藏
+	ToggleLikeFn func() bool // 标记收藏的方法
 	Index        int         // 起始下标
 	ShowResult   bool
 }
@@ -20,8 +20,9 @@ func Run(config Config) (m Model) {
 	p := tea.NewProgram(Model{
 		help: help.New(),
 		handler: &handler{
-			idx: config.Index,
-			l:   len(config.Options),
+			idx:        config.Index,
+			l:          len(config.Options),
+			showResult: config.ShowResult,
 		},
 		itemStyles:   NewItemStyles(),
 		options:      config.Options,
