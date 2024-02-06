@@ -13,11 +13,11 @@ type Option struct {
 	IsCorrect bool // 是否为正确的
 }
 
-func (o *Option) display(onHover bool, showDesc bool, itemStyle DefaultItemStyles) string {
+func (o *Option) display(multiple bool, onHover bool, showDesc bool, itemStyle DefaultItemStyles) string {
 	var (
 		titleStyle, descStyle lipgloss.Style
 	)
-	title, desc := o.format(onHover)
+	title, desc := o.format(onHover, multiple)
 
 	if onHover {
 		titleStyle = itemStyle.SelectedTitle
@@ -36,8 +36,8 @@ func (o *Option) display(onHover bool, showDesc bool, itemStyle DefaultItemStyle
 	}
 }
 
-func (o *Option) displayResult(showDesc bool, itemStyle DefaultItemStyles, isSuccess bool) string {
-	title, desc := o.format(false)
+func (o *Option) displayResult(multiple bool, showDesc bool, itemStyle DefaultItemStyles, isSuccess bool) string {
+	title, desc := o.format(false, multiple)
 	title = itemStyle.NormalTitle.Render(title)
 	desc = itemStyle.NormalDesc.Render(desc)
 	if o.IsCorrect {
@@ -58,15 +58,22 @@ func (o *Option) displayResult(showDesc bool, itemStyle DefaultItemStyles, isSuc
 	}
 }
 
-func (o *Option) format(onHover bool) (title string, desc string) {
-	if o.IsChecked {
-		title = symbolSolid + " " + o.Label
-	} else if onHover {
-		title = symbolHollow + " " + o.Label
-	} else {
-		title = "  " + o.Label
+func (o *Option) format(onHover bool, multiple bool) (title string, desc string) {
+	prefixer := func(str string) string {
+		if multiple {
+			return "[" + str + "] "
+		} else {
+			return " " + str + "  "
+		}
 	}
-	desc = "  " + o.Desc
+	if o.IsChecked {
+		title = prefixer(symbolSolid) + o.Label
+	} else if onHover {
+		title = prefixer(symbolHollow) + o.Label
+	} else {
+		title = prefixer(" ") + o.Label
+	}
+	desc = strings.Repeat(" ", len(prefixer(" "))) + o.Desc
 	return
 }
 
