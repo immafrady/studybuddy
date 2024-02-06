@@ -6,8 +6,8 @@ import (
 	"github.com/immafrady/studybuddy/internal/helpers/promptuihelper"
 )
 
-// selection 下拉选项
-type selection struct {
+// selector 下拉选项
+type selector struct {
 	A string `json:"A,omitempty"`
 	B string `json:"B,omitempty"`
 	C string `json:"C,omitempty"`
@@ -15,7 +15,7 @@ type selection struct {
 }
 
 // toOptions 转换为下拉选项
-func (s selection) toOptions() []promptuihelper.Option[string] {
+func (s selector) toOptions() []promptuihelper.Option[string] {
 	return []promptuihelper.Option[string]{
 		{Label: "A." + s.A, Value: "A"},
 		{Label: "B." + s.B, Value: "B"},
@@ -25,21 +25,21 @@ func (s selection) toOptions() []promptuihelper.Option[string] {
 }
 
 // jsonStringify 格式化为字符串
-func (s selection) jsonStringify() string {
+func (s selector) jsonStringify() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
 // parseSelection 从字符串解析
-func parseSelection(str string) *selection {
-	var s selection
+func parseSelection(str string) *selector {
+	var s selector
 	errorhelper.LogError(json.Unmarshal([]byte(str), &s))
 	return &s
 }
 
 // fromRawQuiz 从原始数据中获取值
-func fromRawQuiz(quiz rawQuiz) *selection {
-	return &selection{
+func fromRawQuiz(quiz rawQuiz) *selector {
+	return &selector{
 		A: quiz.A,
 		B: quiz.B,
 		C: quiz.C,
