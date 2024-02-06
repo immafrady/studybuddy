@@ -99,30 +99,48 @@ func (m Model) AllSelectMatched() bool {
 	return true
 }
 
-func (m Model) toggleCheck() {
-	m.options[m.idx].ToggleCheck()
-}
-
-func (m Model) selectView() string {
-	var (
-		str      string
-		showDesc bool
-	)
-	str += titleBlockStyle.Render(m.title) + "\n"
-
+func (m Model) showDesc() bool {
+	showDesc := false
 	for _, o := range m.options {
 		if o.Desc != "" {
 			showDesc = true
 			break
 		}
 	}
+	return showDesc
+}
+
+func (m Model) toggleCheck() {
+	m.options[m.idx].ToggleCheck()
+}
+
+func (m Model) selectView() string {
+	var (
+		str string
+	)
+	str += titleBlockStyle.Render(m.title) + "\n"
+
 	for i, o := range m.options {
-		str += o.display(i == m.idx, showDesc, m.multiple, m.itemStyles) + "\n"
+		str += o.display(i == m.idx, m.showDesc(), m.itemStyles) + "\n"
 	}
 	return str
 }
 
 func (m Model) resultView() string {
-	// todo
-	return ""
+	var (
+		isSuccess = m.AllSelectMatched()
+		str       string
+	)
+	if isSuccess {
+		symbolSolid = m.itemStyles.CorrectFg.Render(symbolSolid)
+	} else {
+		symbolSolid = m.itemStyles.WrongFg.Render(symbolSolid)
+	}
+	str = symbolSolid + m.title
+	str += titleBlockStyle.Render(str) + "\n"
+
+	for _, o := range m.options {
+		str += o.displayResult(m.showDesc(), m.itemStyles, m.AllSelectMatched())
+	}
+	return str
 }

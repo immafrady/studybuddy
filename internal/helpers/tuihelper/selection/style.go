@@ -6,8 +6,12 @@ import (
 
 var (
 	docStyle        = lipgloss.NewStyle().Margin(1, 2)
-	titleBlockStyle = lipgloss.NewStyle().Padding(0, 0, 2, 0)
+	titleBlockStyle = lipgloss.NewStyle().Padding(0, 0, 1, 0)
 	itemBlockStyle  = lipgloss.NewStyle().PaddingBottom(2)
+	successColor    = lipgloss.Color("46")
+	failColor       = lipgloss.Color("160")
+	symbolSolid     = "●"
+	symbolHollow    = "○"
 )
 
 type DefaultItemStyles struct {
@@ -38,12 +42,10 @@ func NewItemStyles() (s DefaultItemStyles) {
 	s.SelectedDesc = s.SelectedTitle.Copy().
 		Foreground(lipgloss.AdaptiveColor{Light: "#F793FF", Dark: "#AD58B4"})
 
-	sc := lipgloss.Color("46")
-	s.CorrectBg = lipgloss.NewStyle().Background(sc)
-	s.CorrectFg = lipgloss.NewStyle().Foreground(sc)
+	s.CorrectBg = lipgloss.NewStyle().Background(successColor)
+	s.CorrectFg = lipgloss.NewStyle().Foreground(successColor)
 
-	wc := lipgloss.Color("160")
-	s.WrongBg = lipgloss.NewStyle().Background(wc)
-	s.WrongFg = lipgloss.NewStyle().Foreground(wc)
+	s.WrongBg = lipgloss.NewStyle().Background(failColor)
+	s.WrongFg = lipgloss.NewStyle().Foreground(failColor)
 	return
 }

@@ -13,22 +13,11 @@ type Option struct {
 	IsCorrect bool // 是否为正确的
 }
 
-func (o *Option) display(onHover bool, showDesc bool, multiple bool, itemStyle DefaultItemStyles) string {
+func (o *Option) display(onHover bool, showDesc bool, itemStyle DefaultItemStyles) string {
 	var (
-		title, desc           string
 		titleStyle, descStyle lipgloss.Style
 	)
-	if multiple {
-		if o.IsChecked {
-			title = "[X] " + o.Label
-		} else {
-			title = "[ ] " + o.Label
-		}
-		desc = "    " + o.Desc
-	} else {
-		title = o.Label
-		desc = o.Desc
-	}
+	title, desc := o.format(onHover)
 
 	if onHover {
 		titleStyle = itemStyle.SelectedTitle
@@ -47,8 +36,38 @@ func (o *Option) display(onHover bool, showDesc bool, multiple bool, itemStyle D
 	}
 }
 
-func (o *Option) displayResult() {
+func (o *Option) displayResult(showDesc bool, itemStyle DefaultItemStyles, isSuccess bool) string {
+	title, desc := o.format(false)
+	title = itemStyle.NormalTitle.Render(title)
+	desc = itemStyle.NormalDesc.Render(desc)
+	if o.IsCorrect {
+		var bgStyle lipgloss.Style
+		if isSuccess {
+			bgStyle = itemStyle.CorrectBg
+		} else {
+			bgStyle = itemStyle.WrongBg
+		}
+		title = bgStyle.Render(title)
+		desc = bgStyle.Render(desc)
+	}
 
+	if showDesc {
+		return strings.Join([]string{title, desc}, "\n")
+	} else {
+		return title
+	}
+}
+
+func (o *Option) format(onHover bool) (title string, desc string) {
+	if o.IsChecked {
+		title = symbolSolid + " " + o.Label
+	} else if onHover {
+		title = symbolHollow + " " + o.Label
+	} else {
+		title = "  " + o.Label
+	}
+	desc = "  " + o.Desc
+	return
 }
 
 func (o *Option) ToggleCheck() {
