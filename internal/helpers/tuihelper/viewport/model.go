@@ -1,21 +1,23 @@
 package viewport
 
 import (
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/immafrady/studybuddy/internal/helpers/tuihelper"
 	"strings"
 )
 
-//var useHighPerformanceRenderer = false
+var useHighPerformanceRenderer = true
 
 type Model struct {
 	viewport viewport.Model
-	//help     help.Model
-	//KeyMap   tuihelper.KeyMap
-	ready   bool
-	title   string
-	content string
+	help     help.Model
+	KeyMap   tuihelper.KeyMap
+	ready    bool
+	title    string
+	content  string
 }
 
 func (m Model) Init() tea.Cmd {
@@ -29,14 +31,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	)
 
 	switch msg := msg.(type) {
-	//case tea.KeyMsg:
-	//return m.KeyMap.Update(msg)
-
+	case tea.KeyMsg:
+		if kp, err := m.KeyMap.GetKeyPair(msg); err == nil { // 此处判断是有值
+			if kp.Callback != nil {
+				return kp.Callback(m)
+			}
+		}
 	case tea.WindowSizeMsg:
 		headerHeight := lipgloss.Height(m.headerView())
 		footerHeight := lipgloss.Height(m.footerView())
-		//helpHeight := lipgloss.Height(m.helpView())
-		verticalMarginHeight := headerHeight + footerHeight
+		helpHeight := lipgloss.Height(m.helpView())
+		verticalMarginHeight := headerHeight + footerHeight + helpHeight
 
 		if !m.ready {
 			// Since this program is using the full size of the viewport we
@@ -46,7 +51,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// here.
 			m.viewport = viewport.New(msg.Width, msg.Height-verticalMarginHeight)
 			m.viewport.YPosition = headerHeight
-			//m.viewport.HighPerformanceRendering = useHighPerformanceRenderer
+			m.viewport.HighPerformanceRendering = useHighPerformanceRenderer
 			m.viewport.SetContent(m.content)
 			m.ready = true
 
@@ -60,13 +65,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.viewport.Height = msg.Height - verticalMarginHeight
 		}
 
-		//if useHighPerformanceRenderer {
-		// Render (or re-render) the whole viewport. Necessary both to
-		// initialize the viewport and when the window is resized.
-		//
-		// This is needed for high-performance rendering only.
-		//cmds = append(cmds, viewport.Sync(m.viewport))
-		//}
+		if useHighPerformanceRenderer {
+			// Render (or re-render) the whole viewport. Necessary both to
+			// initialize the viewport and when the window is resized.
+			//
+			// This is needed for high-performance rendering only.
+			cmds = append(cmds, viewport.Sync(m.viewport))
+		}
 	}
 
 	// Handle keyboard and mouse events in the viewport
@@ -81,6 +86,6 @@ func (m Model) View() string {
 		m.headerView(),
 		m.viewport.View(),
 		m.footerView(),
-		//m.help.View(m.KeyMap),
+		m.helpView(),
 	}, "\n")
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/immafrady/studybuddy/internal/helpers/tuihelper"
 	"github.com/immafrady/studybuddy/internal/model"
 	"gorm.io/gorm"
+	"os"
 )
 
 type Context struct {
@@ -14,6 +15,8 @@ type Context struct {
 	Types    []model.QuestionType
 	Limit    int
 	History  []tuihelper.ResultOutput // 记录每一题的过程
+	State
+	DoOverFn func(ctx *Context)
 }
 
 func NewContext() *Context {
@@ -34,4 +37,15 @@ func (c Context) DoOver(callback func(ctx *Context)) {
 		Limit:    c.Limit,
 		History:  nil,
 	})
+}
+
+func (c Context) HandleState() {
+	switch c.State {
+	case DoNothing:
+		os.Exit(1)
+	case DoAgain:
+		c.DoOver(c.DoOverFn)
+	case StartAllOver:
+		// 不需要操作什么自动重来
+	}
 }

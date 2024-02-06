@@ -25,6 +25,6 @@ func max(a, b int) int {
 	return b
 }
 
-//func (m Model) helpView() string {
-//	return m.help.View(m.KeyMap)
-//}
+func (m Model) helpView() string {
+	return m.help.View(m.KeyMap)
+}

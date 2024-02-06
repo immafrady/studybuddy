@@ -6,22 +6,22 @@ import (
 	"github.com/immafrady/studybuddy/internal/screens"
 )
 
-func Start(ctx *ctx.Context) {
-	if ctx.Classify == nil {
+func Start(c *ctx.Context) {
+	c.DoOverFn = Start
+	if c.Classify == nil {
 		classify := screens.ClassifyRun()
-		ctx.Classify = &classify
+		c.Classify = &classify
 	}
-	if ctx.Types == nil {
-		ctx.Types = screens.QuestionTypeScreen()
+	if c.Types == nil {
+		c.Types = screens.QuestionTypeScreen()
 	}
-	if ctx.Limit == 0 {
-		ctx.Limit = screens.LimitScreen()
+	if c.Limit == 0 {
+		c.Limit = screens.LimitScreen()
 	}
 	examHolder := examiner.Examiner{
-		Ctx:        ctx,
+		Ctx:        c,
 		ShowResult: true,
 	}
 	examHolder.StartExam()
-	// todo 到时候判断一个布尔值，如果是true就调用
-	ctx.DoOver(Start)
+	c.HandleState()
 }

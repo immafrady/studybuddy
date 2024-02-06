@@ -41,8 +41,6 @@ func (e Examiner) StartExam() {
 	}
 	// 结果
 	screens.QuizResultRun(screens.QuizResultRunArgs{
-		Classify: e.Ctx.Classify,
-		History:  e.Ctx.History,
-		RedoFn:   nil,
+		Ctx: e.Ctx,
 	})
 }

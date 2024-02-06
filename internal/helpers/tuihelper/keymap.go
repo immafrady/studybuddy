@@ -2,15 +2,16 @@ package tuihelper
 
 import (
 	"github.com/charmbracelet/bubbles/help"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type KeyMap interface {
 	help.KeyMap
-	Update(msg tea.KeyMsg) (tea.Model, tea.Cmd)
+	GetKeyPair(msg tea.KeyMsg) (KeyPair, error)
 }
 
-//type KeyPair struct {
-//	Binding key.Binding
-//	Update func()
-//}
+type KeyPair struct {
+	Binding  key.Binding
+	Callback func(model tea.Model) (tea.Model, tea.Cmd)
+}

@@ -7,12 +7,15 @@ import (
 )
 
 func Dispatch() {
-	token := screens.HomeRun()
-	switch token {
-	case screens.TokenStart:
-		controller.Start(ctx.NewContext())
-	case screens.TokenExam:
-	case screens.TokenReview:
-	case screens.TokenHistory:
+	for {
+		// 默认循环执行，直到退出
+		token := screens.HomeRun()
+		switch token {
+		case screens.TokenStart:
+			controller.Start(ctx.NewContext())
+		case screens.TokenExam:
+		case screens.TokenReview:
+		case screens.TokenHistory:
+		}
 	}
 }
