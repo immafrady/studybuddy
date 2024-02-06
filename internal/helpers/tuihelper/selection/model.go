@@ -128,10 +128,7 @@ func (m Model) toggleCheck() {
 }
 
 func (m Model) selectView() string {
-	var (
-		str string
-	)
-	str += titleBlockStyle.Render(m.title) + "\n"
+	str := m.formattedTitle()
 
 	for i, o := range m.options {
 		str += o.display(i == m.idx, m.showDesc(), m.itemStyles) + "\n"
@@ -140,20 +137,24 @@ func (m Model) selectView() string {
 }
 
 func (m Model) resultView() string {
-	var (
-		isSuccess = m.AllSelectMatched()
-		str       string
-	)
-	if isSuccess {
-		symbolSolid = m.itemStyles.CorrectFg.Render(symbolSolid)
-	} else {
-		symbolSolid = m.itemStyles.WrongFg.Render(symbolSolid)
-	}
-	str = symbolSolid + m.title
-	str += titleBlockStyle.Render(str) + "\n"
+	str := m.formattedTitle()
 
 	for _, o := range m.options {
-		str += o.displayResult(m.showDesc(), m.itemStyles, m.AllSelectMatched())
+		str += o.displayResult(m.showDesc(), m.itemStyles, m.AllSelectMatched()) + "\n"
 	}
 	return str
+}
+
+// formattedTitle 格式化Title
+func (m Model) formattedTitle() string {
+	symbol := " "
+	if m.onResultView {
+		symbol = symbolSolid
+		if m.AllSelectMatched() {
+			symbol = m.itemStyles.CorrectFg.Render(symbol)
+		} else {
+			symbol = m.itemStyles.WrongFg.Render(symbol)
+		}
+	}
+	return titleBlockStyle.Render(symbol+" "+m.title) + "\n"
 }
