@@ -3,7 +3,6 @@ package marx
 import (
 	"encoding/json"
 	"github.com/immafrady/studybuddy/internal/helpers/errorhelper"
-	"github.com/immafrady/studybuddy/internal/helpers/promptuihelper"
 )
 
 // selector 下拉选项
@@ -12,16 +11,6 @@ type selector struct {
 	B string `json:"B,omitempty"`
 	C string `json:"C,omitempty"`
 	D string `json:"D,omitempty"`
-}
-
-// toOptions 转换为下拉选项
-func (s selector) toOptions() []promptuihelper.Option[string] {
-	return []promptuihelper.Option[string]{
-		{Label: "A." + s.A, Value: "A"},
-		{Label: "B." + s.B, Value: "B"},
-		{Label: "C." + s.C, Value: "C"},
-		{Label: "D." + s.D, Value: "D"},
-	}
 }
 
 // jsonStringify 格式化为字符串
