@@ -67,9 +67,9 @@ func (o *Option) format(onHover bool, multiple bool) (title string, desc string)
 		}
 	}
 	if o.IsChecked {
-		title = prefixer(symbolSolid) + o.Label
+		title = prefixer(symbolSelected) + o.Label
 	} else if onHover {
-		title = prefixer(symbolHollow) + o.Label
+		title = prefixer(symbolOnHover) + o.Label
 	} else {
 		title = prefixer(" ") + o.Label
 	}

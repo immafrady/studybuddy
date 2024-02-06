@@ -7,14 +7,14 @@ import (
 var (
 	docStyle        = lipgloss.NewStyle().Margin(1, 2)
 	titleBlockStyle = lipgloss.NewStyle().Padding(0, 0, 1, 0)
-	itemBlockStyle  = lipgloss.NewStyle().PaddingBottom(2)
 	successColor    = lipgloss.Color("2")
 	failColor       = lipgloss.Color("1")
 )
 
 const (
-	symbolSolid  = "●"
-	symbolHollow = "○"
+	symbolSelected = "·"
+	symbolOnHover  = " "
+	symbolStatus   = "·"
 )
 
 type DefaultItemStyles struct {

@@ -85,6 +85,7 @@ func (m Model) View() string {
 	} else {
 		km = keyMap{
 			showLike: m.toggleLikeFn != nil,
+			multiple: m.multiple,
 		}
 	}
 
@@ -149,7 +150,7 @@ func (m Model) resultView() string {
 func (m Model) formattedTitle() string {
 	symbol := " "
 	if m.onResultView {
-		symbol = symbolSolid
+		symbol = symbolStatus
 		if m.AllSelectMatched() {
 			symbol = m.itemStyles.CorrectFg.Render(symbol)
 		} else {
