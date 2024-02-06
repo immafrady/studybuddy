@@ -13,11 +13,12 @@ type Model struct {
 	help       help.Model
 	itemStyles DefaultItemStyles
 	*handler
-	options      []*Option
-	liked        bool // todo
-	toggleLikeFn func() bool
-	multiple     bool
-	title        string
+	options       []*Option
+	liked         bool // todo
+	toggleLikeFn  func() bool
+	multiple      bool
+	title         string
+	beforeLeaveFn func(m Model) // todo 回调函数（防止闪屏）
 }
 
 func (m Model) Init() tea.Cmd {
