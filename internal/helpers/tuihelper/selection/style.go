@@ -10,8 +10,11 @@ var (
 	itemBlockStyle  = lipgloss.NewStyle().PaddingBottom(2)
 	successColor    = lipgloss.Color("46")
 	failColor       = lipgloss.Color("160")
-	symbolSolid     = "●"
-	symbolHollow    = "○"
+)
+
+const (
+	symbolSolid  = "●"
+	symbolHollow = "○"
 )
 
 type DefaultItemStyles struct {
