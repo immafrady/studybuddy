@@ -113,6 +113,10 @@ func (m Model) AllSelectMatched() bool {
 	return true
 }
 
+func (m Model) ResultView() string {
+	return m.resultView()
+}
+
 func (m Model) showDesc() bool {
 	showDesc := false
 	for _, o := range m.options {

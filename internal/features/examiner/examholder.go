@@ -2,8 +2,9 @@ package examiner
 
 import (
 	"github.com/immafrady/studybuddy/internal/dispatcher/ctx"
-	"github.com/immafrady/studybuddy/internal/helpers/tuihelper/selection"
+	"github.com/immafrady/studybuddy/internal/helpers/tuihelper"
 	"github.com/immafrady/studybuddy/internal/model"
+	"github.com/immafrady/studybuddy/internal/screens"
 	"github.com/immafrady/studybuddy/internal/service/quiz"
 	"gorm.io/gorm"
 )
@@ -22,7 +23,7 @@ func (e Examiner) StartExam() {
 		ClassifyId:       e.Ctx.Classify.ID,
 		QuestionIds:      make([]uint, 0),
 		WrongQuestionIds: make([]uint, 0)}
-	e.Ctx.History = make([]*selection.Model, e.Ctx.Limit)
+	e.Ctx.History = make([]tuihelper.ResultOutput, 0)
 	e.Ctx.DB.Create(e.Ctx.Record)
 
 	getExamTaker := examTakerMap[e.Ctx.Classify.Name]
@@ -37,7 +38,11 @@ func (e Examiner) StartExam() {
 		correct := m.AllSelectMatched()
 		quiz.AddAnswerRecord(e.Ctx.Record, q.ID, correct)
 		quiz.MarkQuestionDone(&q, correct)
-
 	}
 	// 结果
+	screens.QuizResultRun(screens.QuizResultRunArgs{
+		Classify: e.Ctx.Classify,
+		History:  e.Ctx.History,
+		RedoFn:   nil,
+	})
 }

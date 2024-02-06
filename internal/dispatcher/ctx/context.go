@@ -2,7 +2,7 @@ package ctx
 
 import (
 	"github.com/immafrady/studybuddy/internal/database"
-	"github.com/immafrady/studybuddy/internal/helpers/tuihelper/selection"
+	"github.com/immafrady/studybuddy/internal/helpers/tuihelper"
 	"github.com/immafrady/studybuddy/internal/model"
 	"gorm.io/gorm"
 )
@@ -13,7 +13,7 @@ type Context struct {
 	Record   *model.Record
 	Types    []model.QuestionType
 	Limit    int
-	History  []*selection.Model // 记录每一题的过程
+	History  []tuihelper.ResultOutput // 记录每一题的过程
 }
 
 func NewContext() *Context {
