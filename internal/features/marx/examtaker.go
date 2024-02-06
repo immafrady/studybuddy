@@ -2,95 +2,51 @@ package marx
 
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"github.com/immafrady/studybuddy/internal/features"
-	"github.com/immafrady/studybuddy/internal/helpers/colorhelper"
-	"github.com/immafrady/studybuddy/internal/helpers/promptuihelper"
+	"github.com/immafrady/studybuddy/internal/helpers/tuihelper/selection"
 	"github.com/immafrady/studybuddy/internal/model"
-	"github.com/immafrady/studybuddy/internal/service/quiz"
+	"github.com/immafrady/studybuddy/internal/screens"
 	"strings"
 )
 
-type AnswerSheet struct {
-	features.ExamTaker // 指定继承了这个
+type ExamTaker struct {
+	features.ExamTaker2
 	*model.Question
-	correct  bool                            // 是否正确
-	ans      string                          // 用户自己写的答案
-	options  []promptuihelper.Option[string] // 下拉选项
-	index    int
-	total    int
-	pipeline features.Pipeline[string]
+	index  int
+	total  int
+	screen screens.QuizScreen
 }
 
-func NewExamTaker(question *model.Question, curr int, total int) features.ExamTaker {
-	var pipeline features.Pipeline[string]
-	switch question.Type {
-	case model.QuestionSingle:
-		pipeline = singlePipeline{}
-	case model.QuestionMultiple:
-		pipeline = multiplePipeline{}
-	case model.QuestionJudge:
-		pipeline = judgePipeline{}
-	}
-	return &AnswerSheet{
+func NewExamTaker2(question *model.Question, curr int, total int) features.ExamTaker2 {
+	return ExamTaker{
 		Question: question,
 		index:    curr,
 		total:    total,
-		pipeline: pipeline,
 	}
 }
 
-func (a *AnswerSheet) TakeExam() bool {
-	a.options = a.pipeline.ParseOption(a.Detail)
-	a.ans, a.correct = a.pipeline.DoTask(a.options, a)
-
-	quiz.MarkQuestionDone(a.Question, a.correct)
-	a.DisplayResult()
-	return a.correct
-}
-
-func (a *AnswerSheet) GetLabel() string {
-	// (1/10:单选题) 我是问题我是问题
-	return fmt.Sprintf("(%v/%v:%v) %v ", a.index+1, a.total, model.QuestionTypeLabelMap[a.Type], a.Q)
-}
-
-func (a *AnswerSheet) GetAnswer() string {
-	return a.A
-}
-
-func (a *AnswerSheet) DisplayResult() {
-	fmt.Println("\n-------------")
-	var marker *color.Color
-	if a.correct {
-		marker = color.New(color.FgGreen)
-		colorhelper.RightColor.Print("✓ ")
+func (e ExamTaker) DoExam(showResult bool) selection.Model {
+	title := fmt.Sprintf("(%v/%v:%v) %v ", e.index+1, e.total, model.QuestionTypeLabelMap[e.Type], e.Q)
+	var options []*selection.Option
+	if e.Type == model.QuestionJudge {
+		options = []*selection.Option{
+			{Label: "正确", Value: "Y", IsCorrect: e.A == "Y"},
+			{Label: "错误", Value: "X", IsCorrect: e.A == "X"},
+		}
 	} else {
-		marker = color.New(color.BgRed)
-		colorhelper.WrongColor.Print("✗ ")
-	}
-	fmt.Print(a.GetLabel(), "\n")
-	for _, v := range a.options {
-		display := " " + v.Label
-		selected := strings.Contains(a.ans, v.Value)
-		if selected {
-			display = "●" + display
-		} else {
-			display = " " + display
-		}
-		if a.correct {
-			if selected {
-				marker.Println(display)
-			} else {
-				fmt.Println(display)
-			}
-		} else {
-			if strings.Contains(a.A, v.Value) {
-				marker.Println(display)
-			} else {
-				fmt.Println(display)
-			}
+		s := parseSelection(e.Detail)
+		options = []*selection.Option{
+			{Label: "A." + s.A, Value: "A", IsCorrect: strings.Contains(e.A, "A")},
+			{Label: "B." + s.B, Value: "B", IsCorrect: strings.Contains(e.A, "B")},
+			{Label: "C." + s.C, Value: "C", IsCorrect: strings.Contains(e.A, "C")},
+			{Label: "D." + s.D, Value: "D", IsCorrect: strings.Contains(e.A, "D")},
 		}
 	}
-	fmt.Println("-------------")
-
+	return screens.QuizSelectionRun(screens.QuizSelectionRunArgs{
+		Question:   e.Question,
+		Options:    options,
+		Title:      title,
+		ShowResult: showResult,
+		Multiple:   e.Type == model.QuestionMultiple,
+	})
 }

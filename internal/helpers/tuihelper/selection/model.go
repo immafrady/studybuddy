@@ -14,7 +14,7 @@ type Model struct {
 	itemStyles DefaultItemStyles
 	*handler
 	options      []*Option
-	liked        bool
+	liked        bool // todo
 	toggleLikeFn func() bool
 	multiple     bool
 	title        string

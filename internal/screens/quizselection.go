@@ -7,17 +7,19 @@ import (
 )
 
 type QuizSelectionRunArgs struct {
-	Question     *model.Question // 这里传指针，可以直接改变外面的值
-	OptionParser func(question *model.Question) []*selection.Option
-	Title        string
-	ShowResult   bool
-	Multiple     bool
+	Screen
+	QuizScreen
+	Question   *model.Question // 这里传指针，可以直接改变外面的值
+	Options    []*selection.Option
+	Title      string
+	ShowResult bool
+	Multiple   bool
 }
 
 // QuizSelectionRun 下拉选项的抽象页面；可以控制showResult
 func QuizSelectionRun(args QuizSelectionRunArgs) selection.Model {
 	return selection.Run(selection.Config{
-		Options:  args.OptionParser(args.Question),
+		Options:  args.Options,
 		Title:    args.Title,
 		Multiple: args.Multiple,
 		Liked:    args.Question.Like,
