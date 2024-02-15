@@ -4,8 +4,9 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"github.com/charmbracelet/huh"
 	"github.com/immafrady/studybuddy/internal/database"
-	"github.com/manifoldco/promptui"
+	"github.com/immafrady/studybuddy/internal/helpers/errorhelper"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -19,12 +20,16 @@ var resetCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		force, _ := cmd.Flags().GetBool("force")
 		if !force {
-			prompt := promptui.Prompt{
-				Label:     "确定要重置所有数据吗？",
-				IsConfirm: true,
-			}
-			str, _ := prompt.Run()
-			if str != "y" {
+			var confirm bool
+			err := huh.NewConfirm().
+				Title("确定要重置所有数据吗?").
+				Affirmative("Yes!").
+				Negative("No.").
+				Value(&confirm).
+				Run()
+			errorhelper.ExitOnError(err)
+
+			if !confirm {
 				return
 			}
 		}
