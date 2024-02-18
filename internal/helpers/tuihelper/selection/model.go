@@ -71,28 +71,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m Model) View() string {
-	var str string
-	if m.handler.onResultView {
-		str = m.resultView()
-	} else {
-		str = m.selectView()
-	}
-	var km help.KeyMap
-	if m.onResultView {
-		km = keyMapResultView{
-			showLike: m.toggleLikeFn != nil,
-		}
-	} else {
-		km = keyMap{
-			showLike: m.toggleLikeFn != nil,
-			multiple: m.multiple,
-		}
-	}
-
-	return docStyle.Render(str + "\n\n" + m.help.View(km))
-}
-
 // GetSelectedValues 获取选择的值
 func (m Model) GetSelectedValues() []interface{} {
 	var values []interface{}
@@ -114,10 +92,6 @@ func (m Model) AllSelectMatched() bool {
 	return true
 }
 
-func (m Model) ResultView() string {
-	return m.resultView()
-}
-
 func (m Model) showDesc() bool {
 	showDesc := false
 	for _, o := range m.options {
@@ -131,36 +105,4 @@ func (m Model) showDesc() bool {
 
 func (m Model) toggleCheck() {
 	m.options[m.idx].ToggleCheck()
-}
-
-func (m Model) selectView() string {
-	str := m.formattedTitle()
-
-	for i, o := range m.options {
-		str += o.display(m.multiple, i == m.idx, m.showDesc(), m.itemStyles) + "\n"
-	}
-	return str
-}
-
-func (m Model) resultView() string {
-	str := m.formattedTitle()
-
-	for _, o := range m.options {
-		str += o.displayResult(m.multiple, m.showDesc(), m.itemStyles, m.AllSelectMatched()) + "\n"
-	}
-	return str
-}
-
-// formattedTitle 格式化Title
-func (m Model) formattedTitle() string {
-	symbol := " "
-	if m.onResultView {
-		symbol = symbolStatus
-		if m.AllSelectMatched() {
-			symbol = m.itemStyles.CorrectFg.Render(symbol)
-		} else {
-			symbol = m.itemStyles.WrongFg.Render(symbol)
-		}
-	}
-	return titleBlockStyle.Render(symbol+" "+m.title) + "\n"
 }
